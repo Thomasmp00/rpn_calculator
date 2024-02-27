@@ -157,7 +157,7 @@ class _CalculatorState extends State<Calculator> {
                 children: [
                   _buildButton('0'),
                   _buildButton('C'),
-                  _buildButton('='),
+                  _buildButton('Enter'),
                   _buildButton('+'),
                 ],
               ),
