@@ -11,20 +11,40 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rpn_calculator/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Calculator Widget Test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
+    // Verify the initial state of the calculator.
     expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Error'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
+    // Tap on buttons and check if the output is as expected.
+    await tapButton(tester, '1');
     expect(find.text('1'), findsOneWidget);
+
+    await tapButton(tester, '+');
+    expect(find.text('1 +'), findsOneWidget);
+
+    await tapButton(tester, '2');
+    expect(find.text('1 + 2'), findsOneWidget);
+
+    await tapButton(tester, 'Enter');
+    expect(find.text('3'), findsOneWidget);
+
+    // Add more test cases as needed...
+
   });
 }
+Future<void> tapButton(WidgetTester tester, String buttonText) async {
+  await tester.tap(find.widgetWithText(ElevatedButton, buttonText));
+  await tester.pump(); // Trigger a frame
+  await tester.pumpAndSettle(); // Wait for animations and microtasks to complete
+  await tester.pump(); // Trigger another frame
+}
+
+
+
+
+
+

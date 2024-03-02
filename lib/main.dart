@@ -26,12 +26,18 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   String _output = '';
   List<String> _stack = [];
+  String number = '';
 
   void _onButtonPressed(String value) {
     setState(() {
-      if (value == '=') {
+      if (value == 'Enter') {
         // Perform calculation when '=' is pressed
         try {
+          // If there's a current number, add it to the stack
+          if (number.isNotEmpty) {
+            _stack.add(number);
+            number = '';
+          }
           double result = evaluatePolishNotation(_stack);
           _output = result.toString();
           _stack.clear();
@@ -42,13 +48,23 @@ class _CalculatorState extends State<Calculator> {
         // Clear the calculator
         _output = '';
         _stack.clear();
-      } else {
-        // Append the pressed button value to the current expression
-        _stack.add(value);
+        number = '';
+      } else if (value == 'Space') {
+        // Add the current number to the stack
+        if (number.isNotEmpty) {
+          _stack.add(number);
+          number = '';
+        }
         _output = _stack.join(' ');
+      } else {
+        // Append the pressed button value to the current number
+        number += value;
+        _output = _stack.join(' ') + ' ' + number;
       }
     });
   }
+
+
 
   double evaluatePolishNotation(List<String> tokens) {
     List<double> stack = [];
@@ -129,6 +145,11 @@ class _CalculatorState extends State<Calculator> {
           ),
           Column(
             children: [
+              Row(
+                children: [
+                  _buildButton('Space'),
+                ],
+              ),
               Row(
                 children: [
                   _buildButton('7'),
