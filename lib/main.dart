@@ -31,9 +31,7 @@ class _CalculatorState extends State<Calculator> {
   void _onButtonPressed(String value) {
     setState(() {
       if (value == 'Enter') {
-        // Perform calculation when '=' is pressed
         try {
-          // If there's a current number, add it to the stack
           if (number.isNotEmpty) {
             _stack.add(number);
             number = '';
@@ -45,19 +43,16 @@ class _CalculatorState extends State<Calculator> {
           _output = 'Error';
         }
       } else if (value == 'C') {
-        // Clear the calculator
         _output = '';
         _stack.clear();
         number = '';
       } else if (value == 'Space') {
-        // Add the current number to the stack
         if (number.isNotEmpty) {
           _stack.add(number);
           number = '';
         }
         _output = _stack.join(' ');
       } else {
-        // Append the pressed button value to the current number
         number += value;
         _output = _stack.join(' ') + ' ' + number;
       }
@@ -97,10 +92,10 @@ class _CalculatorState extends State<Calculator> {
         if (operand2 != 0) {
           return operand1 / operand2;
         } else {
-          throw Exception('Division by zero');
+          throw Exception('Cant divide by zero');
         }
       default:
-        throw Exception('Invalid operator: $operator');
+        throw Exception('Cant use operator: $operator');
     }
   }
 
