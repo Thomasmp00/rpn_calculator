@@ -20,13 +20,19 @@ class Calculator extends StatefulWidget {
   const Calculator({Key? key}) : super(key: key);
 
   @override
-  _CalculatorState createState() => _CalculatorState();
+  CalculatorState createState() => CalculatorState();
 }
 
-class _CalculatorState extends State<Calculator> {
+class CalculatorState extends State<Calculator> {
   String _output = '';
   List<String> _stack = [];
+  List<String> get stack => _stack;
   String number = '';
+
+  double calculateResult(List<String> input) {
+    _stack = List.from(input);
+    return evaluatePolishNotation(_stack);
+  }
 
   void _onButtonPressed(String value) {
     setState(() {
@@ -69,7 +75,7 @@ class _CalculatorState extends State<Calculator> {
       } else {
         double operand2 = stack.removeLast();
         double operand1 = stack.removeLast();
-        double result = performOperation(token, operand1, operand2);
+        double result = useOperator(token, operand1, operand2);
         stack.add(result);
       }
     }
@@ -80,7 +86,7 @@ class _CalculatorState extends State<Calculator> {
     return double.tryParse(value) != null;
   }
 
-  double performOperation(String operator, double operand1, double operand2) {
+  double useOperator(String operator, double operand1, double operand2) {
     switch (operator) {
       case '+':
         return operand1 + operand2;
